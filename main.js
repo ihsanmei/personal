@@ -1,189 +1,277 @@
-// Smooth navigation scroll
-window.addEventListener("scroll", function () {
-    var nav = document.querySelector("nav");
-    nav.classList.toggle("sticky", window.scrollY > 0);
-  });
-  
-  // Start typewriter effect in hero
-  var TxtType = function (el, toRotate, period) {
-    this.toRotate = toRotate;
-    this.el = el;
-    this.loopNum = 0;
-    this.period = parseInt(period, 10) || 1000;
-    this.txt = "";
-    this.tick();
-    this.isDeleting = false;
-  };
-  
-  TxtType.prototype.tick = function () {
-    var i = this.loopNum % this.toRotate.length;
-    var fullTxt = this.toRotate[i];
-  
-    if (this.isDeleting) {
-      this.txt = fullTxt.substring(0, this.txt.length - 1);
-    } else {
-      this.txt = fullTxt.substring(0, this.txt.length + 1);
-    }
-  
-    this.el.innerHTML = '<span class="wrap">' + this.txt + "</span>";
-  
-    var that = this;
-    var delta = 110 - Math.random() * 100;
-  
-    if (this.isDeleting) {
-      delta /= 2;
-    }
-  
-    if (!this.isDeleting && this.txt === fullTxt) {
-      delta = this.period;
-      this.isDeleting = true;
-    } else if (this.isDeleting && this.txt === "") {
-      this.isDeleting = false;
-      this.loopNum++;
-      delta = 500;
-    }
-  
-    setTimeout(function () {
-      that.tick();
-    }, delta);
-  };
-  
-  window.onload = function () {
-    var elements = document.getElementsByClassName("typewrite");
-    for (var i = 0; i < elements.length; i++) {
-      var toRotate = elements[i].getAttribute("data-type");
-      var period = elements[i].getAttribute("data-period");
-      if (toRotate) {
-        new TxtType(elements[i], JSON.parse(toRotate), period);
-      }
-    }
-    // INJECT CSS
-    var css = document.createElement("style");
-    css.type = "text/css";
-    css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
-    document.body.appendChild(css);
-  };
-  // End typweriter
-  
-  // Button Hover Effect -> Download  CV button
-  let button = document.querySelector(".btn-primary");
-  let item = document.querySelector(".round");
-  
-  button.addEventListener("mouseenter", function (event) {
-    this.classList += " animate";
-  
-    let buttonX = event.offsetX;
-    let buttonY = event.offsetY;
-  
-    if (buttonY < 24) {
-      item.style.top = 0 + "px";
-    } else if (buttonY > 30) {
-      item.style.top = 48 + "px";
-    }
-  
-    item.style.left = buttonX + "px";
-    item.style.width = "1px";
-    item.style.height = "1px";
-  });
-  
-  button.addEventListener("mouseleave", function () {
-    this.classList.remove("animate");
-  
-    let buttonX = event.offsetX;
-    let buttonY = event.offsetY;
-  
-    if (buttonY < 24) {
-      item.style.top = 0 + "px";
-    } else if (buttonY > 30) {
-      item.style.top = 48 + "px";
-    }
-    item.style.left = buttonX + "px";
-  });
-  
-  // Button hover effect -> Resume button
-  let button_resume = document.querySelector(".btn-resume");
-  let item_resume = document.querySelector(".round-3");
-  
-  button_resume.addEventListener("mouseenter", function (event) {
-    this.classList += " animate-resume";
-  
-    let button_resumeX = event.offsetX;
-    let button_resumeY = event.offsetY;
-  
-    if (button_resumeY < 24) {
-      item_resume.style.top = 0 + "px";
-    } else if (button_resumeY > 30) {
-      item_resume.style.top = 48 + "px";
-    }
-  
-    item_resume.style.left = button_resumeX + "px";
-    item_resume.style.width = "1px";
-    item_resume.style.height = "1px";
-  });
-  
-  button_resume.addEventListener("mouseleave", function () {
-    this.classList.remove("animate-resume");
-  
-    let button_resumeX = event.offsetX;
-    let button_resumeY = event.offsetY;
-  
-    if (button_resumeY < 24) {
-      item_resume.style.top = 0 + "px";
-    } else if (button_resumeY > 30) {
-      item_resume.style.top = 48 + "px";
-    }
-    item_resume.style.left = button_resumeX + "px";
-  });
-  
-  // Navigation
-  const navSlide = () => {
-    const burger = document.querySelector(".burger");
-    const nav = document.querySelector(".nav-links");
-    const navLinks = document.querySelectorAll(".nav-links li");
-  
-    burger.addEventListener("click", () => {
-      nav.classList.toggle("nav-active"); //Toggle nav
-  
-      // Animate links
-      navLinks.forEach((link, index) => {
-        if (link.style.animation) {
-          link.style.animation = "";
-        } else {
-          link.style.animation = `navLinkFade 0.5s ease forwards`;
+window.addEventListener("load", event => {
+
+    function productHeading() {
+        ////////////////
+        // Variables
+        ////////////////
+
+        const product = {
+
+            value: 125,
+            images: [{
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img01.png'
+                },
+                {
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img02.png'
+                },
+                {
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img03.png'
+                },
+                {
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img04.png'
+                },
+                {
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img05.png'
+                },
+                {
+                    img: 'https://rafaelalucas.com/dailyui/12/assets/img06.png'
+                }
+            ]
         }
-        // console.log(index / 5 + 0.2);
-      });
-      // Burger animation
-      burger.classList.toggle("toggle");
-    });
-  };
-  
-  navSlide();
-  
-  // Smooth scrolling to section
-  $(document).ready(function () {
-    // Add smooth scrolling to all links
-    $("a").on("click", function (event) {
-      // Make sure this.hash has a value before overriding default behavior
-      if (this.hash !== "") {
-        // Prevent default anchor click behavior
-        event.preventDefault();
-  
-        // Store hash
-        var hash = this.hash;
-  
-        // Using jQuery's animate() method to add smooth page scroll
-        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-        $("html, body").animate(
-          {
-            scrollTop: $(hash).offset().top,
-          },
-          900,
-          function () {
-            // Add hash (#) to URL when done scrolling (default click behavior)
-            window.location.hash = hash;
-          }
-        );
-      } // End if
-    });
-  });
+
+        const btnAdd = document.querySelector('.btn.add'),
+            btnContainer = document.querySelector('.btnContainer'),
+            wrapper = document.querySelector('.wrapper'),
+            itemNumber = document.querySelector('.itemNumber'),
+            shoppingQuantity = document.querySelector('.shoppingQuantity'),
+            inputQuantity = document.querySelector('.inputQuantity'),
+            plus = document.querySelector('.plus'),
+            minus = document.querySelector('.minus'),
+            arrowDrop = document.querySelector('.arrowDrop'),
+            dropdown = document.querySelector('.dropdown'),
+            nav = document.querySelector('nav'),
+            error = document.querySelector('.error'),
+            shoppingIcon = document.querySelector('.shoppingIcon'),
+            shoppingMenu = document.querySelector('.shoppingMenu'),
+            emptyCart = document.querySelector('.emptyCart');
+
+        let = priceFinal = document.querySelector('.priceFinal'),
+            priceOriginal = document.querySelector('.priceOriginal'),
+            discount = null,
+            sizeNumber = document.querySelector('.sizeNumber'),
+            dropItem = document.querySelectorAll('.dropItem'),
+            maxQuantity = 5,
+            newMaxQuantity = maxQuantity;
+
+        ////////////////
+        // Events
+        ////////////////
+
+        btnAdd.addEventListener('click', addItem);
+        plus.addEventListener("click", plusQuantity);
+        minus.addEventListener("click", minusQuantity);
+        arrowDrop.addEventListener("click", openDrop);
+        shoppingIcon.addEventListener("click", openShoppingCart);
+
+        emptyCart.addEventListener("click", cleanCart);
+
+        dropItem.forEach(function (el) {
+            el.addEventListener("click", getSize);
+        })
+
+        window.addEventListener("resize", resize);
+
+
+        ////////////////
+        // Functions
+        //////////////// 
+
+        // Fixed Nav 
+
+        window.onscroll = function () {
+            if (window.pageYOffset >= 60) {
+                nav.classList.add("fixed");
+            } else {
+                nav.classList.remove("fixed");
+            }
+        };
+
+        // Change button position on mobile
+
+        function resize() {
+            //Button
+            if (window.innerHeight > wrapper.offsetHeight) {
+                btnContainer.classList.remove('fixedBtn');
+            } else {
+                btnContainer.classList.add('fixedBtn');
+            }
+            parallax();
+        }
+
+        // Parallax
+
+        function parallax() {
+            if (window.innerWidth > 800) {
+                var scene = document.querySelectorAll('.scene');
+                scene.forEach(pic => {
+                    var parallax = new Parallax(pic);
+                })
+            }
+        }
+
+        // Calculate the Discount
+
+        function getDisccount() {
+            priceOriginal.innerText = product.value + "€";
+            discount = product.value - (product.value * (30 / 100));
+            priceFinal.innerText = discount + "€";
+        }
+
+        // Calculate the the Prices with discounts
+
+        function getPrice() {
+
+            priceFinal.innerText = discount * inputQuantity.value + "€";
+            priceOriginal.innerText = product.value * inputQuantity.value + "€";
+
+            setTimeout(() => {
+                priceFinal.classList.remove('anime');
+            }, 400);
+        }
+
+        // Update the prices with the quantity counter
+
+        function plusQuantity() {
+            if (inputQuantity.value < maxQuantity) {
+                inputQuantity.value == inputQuantity.value++;
+                priceFinal.classList.add('anime');
+            }
+            getPrice();
+        }
+
+        function minusQuantity() {
+            if (inputQuantity.value > 1) {
+                inputQuantity.value == inputQuantity.value--;
+                priceFinal.classList.add('anime');
+            }
+            getPrice();
+        }
+
+        // Add items to shopping cart
+
+        function addItem() {
+
+            let cenas = parseInt(itemNumber.innerText) + parseInt(inputQuantity.value);
+
+            if (cenas <= newMaxQuantity) {
+                itemNumber.style.display = "flex";
+                itemNumber.innerText = cenas;
+                shoppingQuantity.innerText = "x" + cenas;
+                itemNumber.classList.add("addItem");
+                error.style.display = "none";
+            } else {
+                error.style.display = "flex";
+            }
+
+            setTimeout(() => {
+                itemNumber.classList.remove("addItem");
+            }, 700);
+        }
+
+        // Open Drop
+
+        function openDrop() {
+            if (dropdown.classList.contains('open')) {
+                dropdown.classList.remove('open');
+            } else {
+                dropdown.classList.add('open');
+            }
+        }
+
+        //get Drop Size Number Value 
+
+        function getSize(e) {
+            sizeNumber.innerText = e.currentTarget.innerText;
+            openDrop();
+        }
+
+        // Open Shopphing cart
+
+        function openShoppingCart() {
+            if (itemNumber.innerText != "0") {
+                if (shoppingMenu.classList.contains('openShopping')) {
+                    shoppingMenu.classList.remove('openShopping');
+                } else {
+                    shoppingMenu.classList.add('openShopping');
+                }
+            }
+        }
+
+        //Clean Shopping Cart
+
+        function cleanCart() {
+            shoppingMenu.classList.remove('openShopping');
+            itemNumber.style.display = "none";
+            itemNumber.classList.remove('addItem');
+            itemNumber.innerText = "0";
+        }
+
+        // Populate the images for Swiper
+
+        product.images.forEach(function (el) {
+
+            let template = `
+                <div class="swiper-slide">
+                    <div class="scene" data-hover-only="false"> 
+                        <img src="${el.img}" data-depth="0.5">
+                        <img src="${el.img}" data-depth="1" class="shadow">
+                    </div>
+                </div>`;
+
+            let template2 = `
+                <div class="swiper-slide">
+                    <img src="${el.img}">
+                </div>`;
+
+            document.querySelector('.galleryMain .swiper-wrapper').insertAdjacentHTML('beforeend', template);
+            document.querySelector('.galleryThumbs .swiper-wrapper').insertAdjacentHTML('beforeend', template2);
+        });
+
+
+        // Make the slider function
+
+        var galleryThumbs = new Swiper('.galleryThumbs', {
+            spaceBetween: 0,
+            slidesPerView: 'auto',
+            loop: false,
+            allowTouchMove: false,
+            allowSlidePrev: false,
+            allowSlideNext: false,
+
+        });
+
+        var galleryMain = new Swiper('.galleryMain', {
+            spaceBetween: 300,
+            speed: 500,
+            loop: true,
+            loopedSlides: 5, //looped slides should be the same
+            effect: "coverflow",
+            coverflowEffect: {
+                rotate: 50,
+                slideShadows: false,
+                depth: 200,
+                stretch: 50,
+
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+
+            },
+            thumbs: {
+                swiper: galleryThumbs,
+            },
+        });
+
+        // Call functions 
+        getDisccount();
+        parallax();
+        resize();
+    }
+
+    productHeading();
+});
